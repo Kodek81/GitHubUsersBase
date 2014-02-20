@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">prueba</string>
+    <string name="title_item_detail">Item Detail</string>
+  	<string
+        name="notification_bar_text">User Github Updated</string>
+    <string
+        name="notification_title">User Github updated</string>
+    <string
+        name="notification_info_success">Tap to launch app</string>
+    <string
+        name="notification_info_fail">Updating failed</string>
+</resources>
