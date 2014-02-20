@@ -38,10 +38,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.example.github.ConnectionClass;
 import com.example.prueba.UserListActivity;
 import com.example.prueba.UserListFragment;
 import com.example.prueba.R;
+import com.example.prueba.conexions.ConnectionClass;
 import com.example.prueba.data.*;
 
 

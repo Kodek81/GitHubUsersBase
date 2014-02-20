@@ -1,4 +1,4 @@
-package com.example.github;
+package com.example.prueba.conexions;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import org.apache.http.HttpEntity;
