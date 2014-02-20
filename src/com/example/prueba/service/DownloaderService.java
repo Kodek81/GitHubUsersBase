@@ -44,7 +44,9 @@ import com.example.prueba.UserListFragment;
 import com.example.prueba.R;
 import com.example.prueba.data.*;
 
+
 import android.support.v4.app.NotificationCompat;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -52,6 +54,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -132,7 +135,7 @@ public class DownloaderService extends Service {
    		  	  	userData.put(UserDatabase.C_URL, url);
    		  	  	userData.put(UserDatabase.C_HTML_URL, html_url);
    		  	  	userData.put(UserDatabase.C_REPOS_URL, repos_url);
-   		  	  	Log.e (TAG,id + url);
+   		  	  	//Log.e (TAG,id + url);
    		  	
    		  	  	getContentResolver().insert(
                     UserProvider.CONTENT_URI,
@@ -155,11 +158,13 @@ public class DownloaderService extends Service {
         Context context = DownloaderService.this
                     .getApplicationContext();
 
-
+        Notification updateComplete;
        
         NotificationManager notificationManager = (NotificationManager) context
                     .getSystemService(NOTIFICATION_SERVICE);
         
+       
+        final int sdkVersion = Build.VERSION.SDK_INT;
         String contentTitle = context.getText(R.string.notification_title)
                 .toString();
         String contentText;
@@ -171,6 +176,39 @@ public class DownloaderService extends Service {
             contentText = context.getText(
                 R.string.notification_info_success).toString();
         }
+       /* if (sdkVersion < Build.VERSION_CODES.HONEYCOMB)
+        {
+        
+        	 updateComplete = new Notification();
+             updateComplete.icon = android.R.drawable.stat_notify_sync;
+             updateComplete.tickerText = context
+               .getText(R.string.notification_title);
+             updateComplete.when = System.currentTimeMillis();
+             
+        
+        }
+        else
+        {
+        	updateComplete = new Notification.Builder(context)
+                 .setContentTitle(contentTitle)
+                 .setContentText(contentText)
+                 .setSmallIcon(android.R.drawable.stat_notify_sync)
+                 .build(); // available from API level 11 and onwards
+        } 
+        */
+        updateComplete = new Notification();
+        updateComplete.icon = android.R.drawable.stat_notify_sync;
+        updateComplete.tickerText = context
+          .getText(R.string.notification_title);
+        updateComplete.when = System.currentTimeMillis();
+        
+        Intent notificationIntent = new Intent(context,
+                UserListActivity.class);
+            PendingIntent contentIntent = PendingIntent.getActivity(context, 0,
+                notificationIntent, 0);
+        
+        updateComplete.setLatestEventInfo(context, contentTitle,
+                    contentText, contentIntent);
         
        /* NotificationCompat.Builder builder = new NotificationCompat.Builder(
                 this);
@@ -184,13 +222,12 @@ public class DownloaderService extends Service {
         PendingIntent contentIntent = PendingIntent.getActivity(context, 0,
             notificationIntent, 0);
 
+        */
         
-        updateComplete.setLatestEventInfo(context, contentTitle,
-            contentText, contentIntent);
 
         notificationManager
             .notify(LIST_UPDATE_NOTIFICATION, updateComplete);
-          */      
+           
         }
     }
 
