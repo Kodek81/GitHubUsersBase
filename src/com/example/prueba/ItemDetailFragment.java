@@ -1,7 +1,7 @@
 package com.example.prueba;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import com.actionbarsherlock.app.SherlockFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +16,7 @@ import android.widget.TextView;
  * contained in a {@link ItemListActivity} in two-pane mode (on tablets) or a
  * {@link ItemDetailActivity} on handsets.
  */
-public class ItemDetailFragment extends Fragment {
+public class ItemDetailFragment extends SherlockFragment {
 	/**
 	 * The fragment argument representing the item ID that this fragment
 	 * represents.
@@ -53,7 +53,7 @@ public class ItemDetailFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_item_detail,
+		View rootView = inflater.inflate(R.layout.web_layout,
 				container, false);
 
 		// Show the dummy content as text in a TextView.
@@ -63,6 +63,8 @@ public class ItemDetailFragment extends Fragment {
 		wv.loadUrl(currentURL);
 
 		return rootView;
+	
+	
 	}
 	private class SwAWebClient extends WebViewClient {
 

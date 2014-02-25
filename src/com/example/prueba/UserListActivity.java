@@ -1,10 +1,12 @@
 package com.example.prueba;
 
+import com.example.prueba.service.DownloaderIntentService;
 import com.example.prueba.service.DownloaderService;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import android.util.Log;
 import android.widget.ProgressBar;
 
@@ -23,7 +25,7 @@ import android.widget.ProgressBar;
  * This activity also implements the required {@link ItemListFragment.Callbacks}
  * interface to listen for item selections.
  */
-public class UserListActivity extends FragmentActivity implements UserListFragment.OnUserSelectedListener 
+public class UserListActivity extends SherlockFragmentActivity implements UserListFragment.OnUserSelectedListener 
 		 {
 
 	private boolean mTwoPane;
@@ -38,9 +40,9 @@ public class UserListActivity extends FragmentActivity implements UserListFragme
 		
 		
 		super.onCreate(savedInstanceState);
-		
-		setContentView(R.layout.activity_item_list);
+		setContentView(R.layout.fragmentlist);
 		Context context = this.getApplicationContext();
+		
 		//GetUsers userAsyntask= new GetUsers(this);
 	    //userAsyntask.execute();
 		if (findViewById(R.id.item_detail_container) != null) {
@@ -51,10 +53,16 @@ public class UserListActivity extends FragmentActivity implements UserListFragme
 			mTwoPane = true;
 		
 		}
-		Intent downloader = new Intent(context, DownloaderService.class);
-	    context.startService(downloader);
 		
-		// TODO: If exposing deep links into your app, handle intents here.
+		Intent downloader = new Intent(context, DownloaderIntentService.class);
+		
+		//Intent intent = new Intent(this, DownloadService.class);
+		 
+		    
+		context.startService(downloader);
+		
+		
+		
 	}
 
 	/**
@@ -77,9 +85,12 @@ public class UserListActivity extends FragmentActivity implements UserListFragme
         }
 		else {
 			
-			Intent i = new Intent(this, WebViewActivity.class);
-			i.putExtra("link", link);
-			startActivity(i); 
+			//Intent i = new Intent(this, WebViewActivity.class);
+			//i.putExtra("link", link);
+			//startActivity(i); 
+		
+			Intent viewIntent = new Intent("android.intent.action.VIEW", Uri.parse(link));
+			startActivity(viewIntent); 
 		}
 		
 	}

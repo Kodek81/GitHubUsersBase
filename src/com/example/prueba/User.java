@@ -6,6 +6,7 @@ import java.util.Locale;
 
 import android.provider.BaseColumns;
 
+
 public class User implements Comparable<User>
 {    
 	

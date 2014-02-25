@@ -39,13 +39,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.example.prueba.UserListActivity;
-import com.example.prueba.UserListFragment;
+
 import com.example.prueba.R;
 import com.example.prueba.conexions.ConnectionClass;
 import com.example.prueba.data.*;
 
-
-import android.support.v4.app.NotificationCompat;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -66,6 +64,8 @@ public class DownloaderService extends Service {
   
     private static final int LIST_UPDATE_NOTIFICATION = 100;
     private static String url = "https://api.github.com/users";
+  
+    	
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         URL gitHubPath;
@@ -96,20 +96,24 @@ public class DownloaderService extends Service {
             ConnectionClass sh = new ConnectionClass();
             // Making a request to url and getting response
 	 
-            String jsonStr = sh.getJson(url);
+         
             
-            if (jsonStr != null) {
-            	JSONArray users;
-            try {
-            	users = new JSONArray(jsonStr);
-            	insertAll(users);   
-            } catch (JSONException e) {
-            	Log.e(TAG, "error in converting to JSONArray");
-            }                           
-     
-    } else {
-        Log.e("ServiceHandler", "Couldn't get any data from the url");
-    }
+            for (int i=0;i<100;i++)
+            {	String urlPath ="https://api.github.com/user/repos?page="+String.valueOf(i) +  "&per_page=100"; 
+            	String jsonStr = sh.getJson(url);
+                if (jsonStr != null) {
+                	JSONArray users;
+                	try {
+                		users = new JSONArray(jsonStr);
+                		insertAll(users);   
+                	} catch (JSONException e) {
+                			Log.e(TAG, "error in converting to JSONArray");
+                	}
+             
+                } else {
+                		Log.e("ServiceHandler", "Couldn't get any data from the url");
+                }
+            }
             return succeeded;
         }
         private boolean insertAll(JSONArray users)
@@ -135,7 +139,7 @@ public class DownloaderService extends Service {
    		  	  	userData.put(UserDatabase.C_URL, url);
    		  	  	userData.put(UserDatabase.C_HTML_URL, html_url);
    		  	  	userData.put(UserDatabase.C_REPOS_URL, repos_url);
-   		  	  	//Log.e (TAG,id + url);
+   		  	  	Log.e (TAG,id + id);
    		  	
    		  	  	getContentResolver().insert(
                     UserProvider.CONTENT_URI,
@@ -155,19 +159,27 @@ public class DownloaderService extends Service {
 
         @Override
         protected void onPostExecute(Boolean result) {
+        
+        
+        	
         Context context = DownloaderService.this
                     .getApplicationContext();
 
+        
         Notification updateComplete;
+        
        
         NotificationManager notificationManager = (NotificationManager) context
                     .getSystemService(NOTIFICATION_SERVICE);
         
-       
+              
         final int sdkVersion = Build.VERSION.SDK_INT;
+    
         String contentTitle = context.getText(R.string.notification_title)
                 .toString();
+    
         String contentText;
+    
         if (!result) {
             Log.w(DEBUG_TAG, " The update had errors");
             contentText = context.getText(R.string.notification_info_fail)
@@ -176,6 +188,7 @@ public class DownloaderService extends Service {
             contentText = context.getText(
                 R.string.notification_info_success).toString();
         }
+       
        /* if (sdkVersion < Build.VERSION_CODES.HONEYCOMB)
         {
         
@@ -201,7 +214,7 @@ public class DownloaderService extends Service {
         updateComplete.tickerText = context
           .getText(R.string.notification_title);
         updateComplete.when = System.currentTimeMillis();
-        
+       
         Intent notificationIntent = new Intent(context,
                 UserListActivity.class);
             PendingIntent contentIntent = PendingIntent.getActivity(context, 0,
@@ -227,7 +240,7 @@ public class DownloaderService extends Service {
 
         notificationManager
             .notify(LIST_UPDATE_NOTIFICATION, updateComplete);
-           
+       
         }
     }
 

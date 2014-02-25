@@ -22,14 +22,14 @@ public class UserProvider extends ContentProvider {
     public static final int USERS = 100;
     public static final int USERS_ID = 110;
 
-    private static final String USERS_BASE_PATH = "usuarios";
+    private static final String USERS_BASE_PATH = "users";
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY
             + "/" + USERS_BASE_PATH);
 
     public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE
-            + "/mt-tutorial";
+            + "/users";
     public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE
-            + "/mt-tutorial";
+            + "/users";
 
     private static final UriMatcher sURIMatcher = new UriMatcher(
             UriMatcher.NO_MATCH);
@@ -76,6 +76,7 @@ public class UserProvider extends ContentProvider {
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         int uriType = sURIMatcher.match(uri);
+        Log.e(TAG, "URI TYPE delete:" + String.valueOf(uriType));
         SQLiteDatabase sqlDB = mDB.getWritableDatabase();
         int rowsAffected = 0;
         switch (uriType) {
